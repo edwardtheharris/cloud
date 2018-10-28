@@ -1,17 +1,5 @@
 ---
 - hosts: archlinux
   remote_user: root
-  tasks:
-    - copy:
-        src: sudoers
-        dest: /etc/sudoers
-    - pacman:
-        update_cache: true
-        state: present
-        upgrade: true
-        name: docker,git,vim
-    - user:
-        name: duchess
-        home: /home/duchess
-        shell: /bin/bash
-        groups: wheel
+  roles:
+    - archlinux
