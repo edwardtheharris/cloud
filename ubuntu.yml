@@ -1,0 +1,21 @@
+---
+- hosts: 2600:3c01::f03c:91ff:fe83:ab6e
+  tasks:
+    - authorized_key:
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+        state: present
+        user: duchess
+    - lineinfile:
+        dest: ~/.bashrc
+        line: 'export PS1="\[\033[38;5;27m\]\u\[$(tput sgr0)\]
+              \[\033[38;5;15m\]@\[$(tput sgr0)\]\[\033[38;5;28m\]
+              \H\[$(tput sgr0)\]\[\033[38;5;15m\]:\[$(tput sgr0)\]
+              \[\033[38;5;245m\]\w\[$(tput sgr0)\]\[\033[38;5;15m\]
+              {\$?}\\$ \[$(tput sgr0)\]"'
+        state: present
+    - lineinfile:
+        dest: ~/.bash_profile
+        line: "source $HOME/.bashrc"
+        state: present
+        create: "yes"
+...

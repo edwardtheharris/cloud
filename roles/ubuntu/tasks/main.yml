@@ -1,2 +1,7 @@
 ---
+- name: Upgrade system packages.
+  apt:
+    update_cache: "yes"
+    upgrade: safe
 # tasks file for ubuntu
+...
