@@ -52,4 +52,15 @@
     apply:
       become: "yes"
       become_user: duchess
+- name: Copy new ssh config.
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/ssh/{{ item }}"
+  loop:
+    - ssh_config
+    - sshd_config
+- name: Restart sshd.
+  service:
+    name: sshd
+    state: restarted
 ...
