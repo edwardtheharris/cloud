@@ -1,0 +1,24 @@
+---
+- name: Install vundle.
+  git:
+    clone: "yes"
+    dest: /home/duchess/.vim
+    repo: https://github.com/VundleVim/Vundle.vim
+  become: "yes"
+  become_user: duchess
+- name: Extract dotfiles.
+  unarchive:
+    src: https://github.com/edwardtheharris/dotfiles/archive/arch.zip
+    dest: /tmp
+    remote_src: "yes"
+  become: "yes"
+  become_user: duchess
+- name: Move dotfiles.
+  shell: mv -v /tmp/dotfiles-arch/.[bgvw]* /home/duchess/
+  become: "yes"
+  become_user: duchess
+- name: Install vim plugins.
+  shell: vim +BundleInstall +qall
+  become: "yes"
+  become_user: duchess
+...
