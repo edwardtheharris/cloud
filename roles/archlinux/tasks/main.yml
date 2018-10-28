@@ -1,16 +1,46 @@
 ---
-- copy:
+- name: Copy sudoers file.
+  copy:
     src: sudoers
     dest: /etc/sudoers
-- pacman:
+- name: Upgrade system packages.
+  pacman:
     update_cache: true
     state: present
     upgrade: true
+- name: Install some utilities.
+  pacman:
     name: docker,git,vim
-- user:
+    state: present
+- name: Add group for docker.
+  group:
+    name: docker
+    state: present
+- name: Download pip installation.
+  get_url:
+    url: https://bootstrap.pypa.io/get-pip.py
+    dest: /tmp/get-pip.py
+- name: Run pip installation.
+  shell: python3 /tmp/get-pip.py; rm /tmp/get-pip.py
+- name: Copy new ssh_config.
+  copy:
+    src: ssh_config
+    dest: /etc/ssh/ssh_config
+- name: Add user.
+  user:
     name: duchess
     home: /home/duchess
     shell: /bin/bash
     groups: wheel
-# tasks file for archlinx
+- name: Copy public keys.
+  authorized_key:
+    user: duchess
+    key: "{{ item }}"
+    state: present
+  loop:
+    - "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+    - "{{ cody_local }}"
+- git:
+    dest: /home/duchess
+    repo: https://github.com/edwardtheharris/dotfiles
 ...
