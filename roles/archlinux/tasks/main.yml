@@ -25,6 +25,7 @@
   group:
     name: docker
     state: present
+- include_tasks: glances.yml
 - name: Download pip installation.
   get_url:
     url: https://bootstrap.pypa.io/get-pip.py
@@ -52,15 +53,4 @@
     apply:
       become: "yes"
       become_user: duchess
-- name: Copy new ssh config.
-  copy:
-    src: "{{ item }}"
-    dest: "/etc/ssh/{{ item }}"
-  loop:
-    - ssh_config
-    - sshd_config
-- name: Restart sshd.
-  service:
-    name: sshd
-    state: restarted
 ...

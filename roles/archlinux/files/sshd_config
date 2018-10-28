@@ -10,10 +10,10 @@
 # possible, but leave them commented.  Uncommented options override the
 # default value.
 
-#Port 22
-#AddressFamily any
-#ListenAddress 0.0.0.0
-#ListenAddress ::
+Port 22
+AddressFamily any
+ListenAddress 0.0.0.0
+ListenAddress ::
 
 #HostKey /etc/ssh/ssh_host_rsa_key
 #HostKey /etc/ssh/ssh_host_ecdsa_key
@@ -79,7 +79,7 @@ ChallengeResponseAuthentication no
 # If you just want the PAM account and session checks to run without
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
-UsePAM yes
+UsePAM no 
 
 #AllowAgentForwarding yes
 #AllowTcpForwarding yes
@@ -88,7 +88,7 @@ UsePAM yes
 #X11DisplayOffset 10
 #X11UseLocalhost yes
 #PermitTTY yes
-PrintMotd no # pam does that
+PrintMotd yes # pam does that
 #PrintLastLog yes
 #TCPKeepAlive yes
 #UseLogin no

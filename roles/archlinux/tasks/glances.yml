@@ -1,0 +1,18 @@
+---
+- name: Install glances.
+  pip:
+    state: present
+    name: "{{ item }}"
+  loop:
+    - bottle
+    - glances
+- name: Copy glances.service.
+  copy:
+    src: glances.service
+    dest: /lib/systemd/system/glances.service
+- name: Start and enable glances.
+  service:
+    name: glances
+    state: started
+    enabled: "yes"
+...
