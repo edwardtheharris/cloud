@@ -53,4 +53,13 @@
     apply:
       become: "yes"
       become_user: duchess
+- name: Fix sshd.
+  copy:
+    src: sshd_config
+    dest: /etc/ssh/sshd_config
+- name: Restart sshd.
+  service:
+    name: sshd
+    state: restarted
+    enabled: "yes"
 ...
