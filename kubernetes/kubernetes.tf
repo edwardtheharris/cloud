@@ -1,5 +1,7 @@
+variable linode_token {}
+
 provider "linode" {
-  token = "YOUR_LINODE_API_TOKEN"
+  token = "${var.linode_token}"
 }
 
 resource "linode_instance" "terraform-web" {
