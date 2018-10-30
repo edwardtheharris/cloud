@@ -1,4 +1,5 @@
 variable linode_token {}
+variable pubkey {}
 
 provider "linode" {
   token = "${var.linode_token}"
