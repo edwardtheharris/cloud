@@ -1,0 +1,10 @@
+---
+language: python
+python:
+  - '3.6'
+install:
+  - sudo apt-get -y install ansible
+script:
+  - cd playbooks
+  - ansible-playbook --check kubernetes.yml
+...

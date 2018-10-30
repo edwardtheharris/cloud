@@ -7,11 +7,13 @@
   register: kubernetes
 - name: Add hosts to current inventory.
   add_host:
-    name: "{{ kubernetes.outputs.inventory_hostname.value }}"
+    name: "{{ item }}"
     group: kubernetes
+  loop: "{{ kubernetes.outputs.inventory_hostname.value }}"
 - name: Wait for SSH connection availability.
   wait_for:
     port: 22
     state: started
-    host: "{{ kubernetes.outputs.inventory_hostname.value }}"
+    host: "{{ item }}"
+  loop: "{{ kubernetes.outputs.inventory_hostname.value }}"
 ...
