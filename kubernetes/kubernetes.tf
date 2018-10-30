@@ -4,12 +4,22 @@ provider "linode" {
   token = "${var.linode_token}"
 }
 
-resource "linode_instance" "terraform-web" {
-        image = "linode/ubuntu18.04"
-        label = "Terraform-Web-Example"
-        group = "Terraform"
-        region = "us-east"
-        type = "g6-standard-1"
-        authorized_keys = [ "YOUR_PUBLIC_SSH_KEY" ]
-        root_pass = "YOUR_ROOT_PASSWORD"
+resource "linode_instance" "kubernetes-actual" {
+        image = "linode/archlinux"
+        label = "kuberenetes-actual"
+        group = "kubernetes"
+        region = "us-west"
+        type = "g6-nanode-1"
+        authorized_keys = [ "${var.pubkey}" ]
+        root_pass = "${var.linode_token}"
+}
+
+resource "linode_instance" "kubernetes-alpha" {
+  image = "linode/archlinux"
+  label = "kubernetes-alpha"
+  group = "kubernetes"
+  region = "us-west"
+  type = "g6-nanode-1"
+  authorized_keys = [ "${var.pubkey}" ]
+  root_pass = "${var.linode_token}"
 }
