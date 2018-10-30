@@ -3,6 +3,7 @@
   terraform:
     project_path: ../tf/kubernetes
     state: present
+    force_init: "yes"
   register: kubernetes
 - name: Add hosts to current inventory.
   add_host:
