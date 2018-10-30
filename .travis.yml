@@ -6,5 +6,6 @@ install:
   - sudo apt-get -y install ansible
 script:
   - cd playbooks
-  - ansible-playbook --check kubernetes.yml
+  - echo "localhost" > hosts
+  - ansible-playbook -i hosts --check kubernetes.yml
 ...
