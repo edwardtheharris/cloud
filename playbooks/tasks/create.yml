@@ -1,0 +1,16 @@
+---
+- name: Start cluster with terraform.
+  terraform:
+    project_path: ../tf/kubernetes
+    state: present
+  register: kubernetes
+- name: Add hosts to current inventory.
+  add_host:
+    name: "{{ kubernetes.outputs.inventory_hostname.value }}"
+    group: kubernetes
+- name: Wait for SSH connection availability.
+  wait_for:
+    port: 22
+    state: started
+    host: "{{ kubernetes.outputs.inventory_hostname.value }}"
+...
