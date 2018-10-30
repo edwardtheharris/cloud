@@ -1,0 +1,21 @@
+digraph {
+	compound = "true"
+	newrank = "true"
+	subgraph "root" {
+		"[root] linode_instance.kubernetes-actual" [label = "linode_instance.kubernetes-actual", shape = "box"]
+		"[root] linode_instance.kubernetes-alpha" [label = "linode_instance.kubernetes-alpha", shape = "box"]
+		"[root] provider.linode" [label = "provider.linode", shape = "diamond"]
+		"[root] linode_instance.kubernetes-actual" -> "[root] provider.linode"
+		"[root] linode_instance.kubernetes-actual" -> "[root] var.pubkey"
+		"[root] linode_instance.kubernetes-alpha" -> "[root] provider.linode"
+		"[root] linode_instance.kubernetes-alpha" -> "[root] var.pubkey"
+		"[root] meta.count-boundary (count boundary fixup)" -> "[root] linode_instance.kubernetes-actual"
+		"[root] meta.count-boundary (count boundary fixup)" -> "[root] linode_instance.kubernetes-alpha"
+		"[root] provider.linode (close)" -> "[root] linode_instance.kubernetes-actual"
+		"[root] provider.linode (close)" -> "[root] linode_instance.kubernetes-alpha"
+		"[root] provider.linode" -> "[root] var.linode_token"
+		"[root] root" -> "[root] meta.count-boundary (count boundary fixup)"
+		"[root] root" -> "[root] provider.linode (close)"
+	}
+}
+

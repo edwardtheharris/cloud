@@ -1,0 +1,69 @@
+#!/usr/bin/env python
+"""Inventory script for linode."""
+import argparse
+import json
+import os
+import linode_api4
+
+
+class LinodeInventory:
+    """Supposedly a dynamic inventory script for Linode."""
+    args = None
+    inventory = {'_meta': {'hostvars': {}}}
+
+    def __init__(self):
+        self.read_cli_args()
+
+        if self.args.list:
+            self.inventory = self.linode_inventory()
+
+        print(json.dumps(self.inventory))
+
+    def linode_inventory(self):
+        """Return dynamically loaded Linode inventory plus local."""
+        self.inventory = self.static_inventory()
+        client = linode_api4.LinodeClient(os.environ.get('LINODE_TOKEN'))
+        for tag in client.tags():
+            self.inventory.update({
+                tag.label: {'hosts': [], 'vars': {}}})
+
+        self.inventory.update({'linode': {'hosts': [], 'vars': {}}})
+        instances = client.linode.instances()
+        for instance in instances:
+            for tag in instance.tags:
+                self.inventory.get(tag).get('hosts').append(instance.ipv4[0])
+            self.inventory.get('linode').get('hosts').append(instance.ipv4[0])
+            self.inventory.get("_meta").get('hostvars').update(
+                {instance.label: {}})
+        return self.inventory
+
+    def static_inventory(self):
+        """Return standard local inventory."""
+        self.inventory = {
+            'local': {
+                'hosts': ['localhost'],
+                'vars': {
+                    'ansible_connection': 'local'
+                }
+            },
+            'all': {
+                'hosts': ['localhost']
+            },
+            "_meta": {
+                'hostvars': {
+                    'localhost': {}
+                }
+            }
+        }
+        return self.inventory
+
+    def read_cli_args(self):
+        """Read cli arguments."""
+        parser = argparse.ArgumentParser()
+        parser.add_argument('--list', action='store_true')
+        parser.add_argument('--host', action='store')
+        self.args = parser.parse_args()
+
+
+LinodeInventory()
+#: vim: ft=python:
