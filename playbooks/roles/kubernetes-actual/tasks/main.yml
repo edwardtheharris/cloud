@@ -1,2 +1,11 @@
 ---
-# tasks file for kubernetes-actual
+- name: Install kubernetes.
+  aur:
+    name: "{{ item }}"
+  loop:
+    - kubernetes-cni-bin
+    - kubelet-bin
+    - kubeadm-bin
+    - kubectl-bin
+# tasks file for kubernetes-actua
+...

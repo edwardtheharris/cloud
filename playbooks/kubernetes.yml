@@ -17,7 +17,14 @@
 - hosts: kubernetes
   remote_user: root
   roles:
-    - role: archlinux
-      tags:
-        - create
+    - {
+      role: archlinux,
+      tags: [create]
+    }
+- hosts: kubernetes
+  roles:
+    - {
+      role: kubernetes-actual,
+      tags: [install]
+    }
 ...
