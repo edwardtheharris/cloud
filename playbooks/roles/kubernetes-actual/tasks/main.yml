@@ -1,4 +1,9 @@
 ---
+- name: Install kubernetes requirements.
+  pacman:
+    name: ebtables,ethtool,socat
+    state: present
+  become: "yes"
 - name: Install kubernetes.
   aur:
     name: "{{ item }}"
@@ -7,5 +12,15 @@
     - kubelet-bin
     - kubeadm-bin
     - kubectl-bin
+- name: Enable docker service.
+  service:
+    name: docker
+    enabled: "yes"
+  become: "yes"
+- name: Enable kubelet service.
+  service:
+    name: kubelet
+    enabled: "yes"
+  become: "yes"
 # tasks file for kubernetes-actua
 ...
