@@ -1,0 +1,9 @@
+---
+- hosts: kubernetes
+  tasks:
+    - name: Wait for ssh to become available.
+      wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 22
+        state: started
+...
