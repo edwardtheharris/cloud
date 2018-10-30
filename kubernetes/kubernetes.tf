@@ -13,6 +13,14 @@ resource "linode_instance" "kubernetes-actual" {
   type = "g6-nanode-1"
   authorized_keys = [ "${var.pubkey}" ]
   root_pass = "${var.linode_token}"
+
+  provisioner "local-exec" {
+    command = "ansible-playbook wait.yml"
+  }
+
+  provisioner "local-exec" {
+    command = "cd ../; ansible-playbook archlinux.yml"
+  }
 }
 
 resource "linode_instance" "kubernetes-alpha" {
