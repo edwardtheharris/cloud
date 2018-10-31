@@ -15,4 +15,5 @@
     name: glances
     state: started
     enabled: "yes"
+  when: ansible_connection != 'docker'
 ...
