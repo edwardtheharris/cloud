@@ -15,15 +15,15 @@ resource "linode_instance" "kubernetes-actual" {
   root_pass       = "${var.linode_token}"
 }
 
-resource "linode_instance" "kubernetes-alpha" {
-  image = "linode/arch"
-  label = "alpha"
-  group = "kubernetes"
-  region = "us-west"
-  type = "g6-nanode-1"
-  authorized_keys = [ "${var.pubkey}" ]
-  root_pass = "${var.linode_token}"
-}
+#resource "linode_instance" "kubernetes-alpha" {
+#  image = "linode/arch"
+#  label = "alpha"
+#  group = "kubernetes"
+#  region = "us-west"
+#  type = "g6-nanode-1"
+#  authorized_keys = [ "${var.pubkey}" ]
+#  root_pass = "${var.linode_token}"
+#}
 
 output "addresses" {
   value = [
