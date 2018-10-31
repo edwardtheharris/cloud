@@ -19,6 +19,7 @@ install:
       https://github.com/kewlfft/ansible-aur.git ~/.ansible/plugins/modules/aur
   - docker pull base/archlinux:latest
   - docker run -d -h actual --name actual base/archlinux sleep infinity
+  - docker exec actual pacman -Syyu python3
   # Check ansible version
   - ansible --version
 script:

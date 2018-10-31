@@ -5,8 +5,8 @@
     dest: /etc/sudoers
 - name: Upgrade system packages.
   pacman:
-    update_cache: "yes" 
-    upgrade: "yes" 
+    update_cache: "yes"
+    upgrade: "yes"
 - name: Install some utilities.
   pacman:
     name: base-devel,docker,git,unzip,vim
