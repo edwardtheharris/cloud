@@ -1,2 +1,7 @@
 ---
-# handlers file for archlinx
+- name: restart_sshd
+  service:
+    name: sshd
+    state: restarted
+    enabled: "yes"
+...

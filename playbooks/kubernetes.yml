@@ -8,16 +8,27 @@
             - create
       tags:
         - create
-    - name: Destroy cluster with terraform.
-      terraform:
-        state: absent
-        project_path: ../tf/kubernetes
-      tags:
-        - destroy
+    - block:
+        - name: Destroy cluster with terraform.
+          terraform:
+            state: absent
+            project_path: ../tf/kubernetes
+          tags:
+            - destroy
+        - meta: end_play
+          tags:
+            - destroy
 - hosts: kubernetes
-  remote_user: root
   roles:
-    - role: archlinux
-      tags:
-        - create
+    - {
+      role: archlinux,
+      tags: [create, archlinux]
+    }
+- hosts: kubernetes
+  remote_user: duchess
+  roles:
+    - {
+      role: kubernetes,
+      tags: [install]
+    }
 ...
