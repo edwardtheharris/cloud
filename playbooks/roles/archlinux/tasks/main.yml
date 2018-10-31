@@ -57,4 +57,5 @@
     src: sshd_config
     dest: /etc/ssh/sshd_config
   notify: restart_sshd
+  when: ansible_connection != 'docker'
 ...
