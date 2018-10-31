@@ -18,12 +18,19 @@
         - meta: end_play
           tags:
             - destroy
-- hosts: kubernetes
-  roles:
-    - {
-      role: archlinux,
-      tags: [create, archlinux]
-    }
+- name: Configure the kubernetes hosts.
+  hosts: kubernetes
+  tasks:
+    - include_role:
+        name: archlinux
+      tags:
+        - create
+        - archlinux
+    - include_role:
+        name: ansible.kubernetes-modules
+      tags:
+        - create
+        - kubernetes
 - hosts: kubernetes
   remote_user: duchess
   roles:
