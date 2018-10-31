@@ -23,8 +23,7 @@
     enabled: "yes"
   become: "yes"
 - name: Restart instance.
-  shell: shutdown -r now
-  ignore_errors: "yes"
+  reboot:
   become: "yes"
 # tasks file for kubernetes-actua
 - name: Wait for reboot.

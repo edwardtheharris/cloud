@@ -19,17 +19,10 @@
           tags:
             - destroy
 - hosts: kubernetes
-  post_tasks:
-    - name: Add hosts to current inventory.
-      add_host:
-        name: "{{ item }}"
-        group: kubernetes
-        ansible_ssh_user: duchess
-      loop: "{{ kubernetes.outputs.inventory_hostname.value }}"
   roles:
     - {
       role: archlinux,
-      tags: [create]
+      tags: [create, archlinux]
     }
 - hosts: kubernetes
   remote_user: duchess
