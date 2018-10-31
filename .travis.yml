@@ -13,12 +13,15 @@ addons:
 install:
   # Install ansible
   - pip install ansible
+  - docker pull base/archlinux:latest
   - docker run -d -h --name actual base/archlinux sleep infinity
   # Check ansible version
   - ansible --version
 script:
   # Basic role syntax check
-  - ansible-playbook -i hosts/static -t archlinux -t install playbooks/kubernetes.yml 
+  - >
+      ansible-playbook -i hosts/static
+      -t archlinux -t install playbooks/kubernetes.yml
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
 ...
