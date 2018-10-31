@@ -14,7 +14,7 @@ install:
   # Install ansible
   - pip install ansible
   - docker pull base/archlinux:latest
-  - docker run -d -h --name actual base/archlinux sleep infinity
+  - docker run -d -h actual --name actual base/archlinux sleep infinity
   # Check ansible version
   - ansible --version
 script:
