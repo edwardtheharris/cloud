@@ -2,7 +2,9 @@
 language: python
 python: "3.6"
 # Use the new container infrastructure
-sudo: false
+sudo: required
+services:
+  - docker
 # Install ansible
 addons:
   apt:
@@ -11,6 +13,7 @@ addons:
 install:
   # Install ansible
   - pip install ansible
+  - docker run -d base/archlinux sleep infinity
   # Check ansible version
   - ansible --version
 script:
