@@ -15,7 +15,7 @@
             project_path: ../tf/kubernetes
           tags:
             - destroy
-        - meta: refresh_inventory
+        - meta: end_play
           tags:
             - destroy
 - hosts: kubernetes
