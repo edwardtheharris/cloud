@@ -44,7 +44,7 @@
     key: "{{ item }}"
     state: present
   loop:
-    - "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+    - "{{ root_ansible }}" 
     - "{{ cody_local }}"
 - name: Include user tasks.
   include_tasks:
