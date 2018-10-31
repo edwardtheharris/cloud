@@ -7,7 +7,7 @@ provider "linode" {
 
 resource "linode_instance" "kubernetes-actual" {
   image           = "linode/arch"
-  label           = "kuberenetes-actual"
+  label           = "kubernetes-actual"
   group           = "kubernetes"
   region          = "us-west"
   type            = "g6-nanode-1"
@@ -25,9 +25,16 @@ resource "linode_instance" "kubernetes-alpha" {
   root_pass = "${var.linode_token}"
 }
 
-output "inventory_hostname" {
+output "addresses" {
   value = [
     "${linode_instance.kubernetes-actual.ip_address}",
     "${linode_instance.kubernetes-alpha.ip_address}"
+  ]
+}
+
+output "hostnames" {
+  value = [
+    "${linode_instance.kubernetes-actual.label}",
+    "${linode_instance.kubernetes-alpha.label}",
   ]
 }
