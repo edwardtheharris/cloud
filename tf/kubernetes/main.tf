@@ -7,7 +7,7 @@ provider "linode" {
 
 resource "linode_instance" "kubernetes-actual" {
   image           = "linode/arch"
-  label           = "kubernetes-actual"
+  label           = "actual"
   group           = "kubernetes"
   region          = "us-west"
   type            = "g6-nanode-1"
@@ -17,7 +17,7 @@ resource "linode_instance" "kubernetes-actual" {
 
 resource "linode_instance" "kubernetes-alpha" {
   image = "linode/arch"
-  label = "kubernetes-alpha"
+  label = "alpha"
   group = "kubernetes"
   region = "us-west"
   type = "g6-nanode-1"

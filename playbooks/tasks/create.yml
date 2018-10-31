@@ -6,18 +6,27 @@
     force_init: "yes"
   register: kubernetes
 - debug:
-    var: "{{ kubernetes.outputs.inventory_hostname.value }}"
-- name: Add hosts to current inventory.
+    var: kubernetes
+- debug:
+    msg: "
+     {{ item }} {{ index }}
+     {{ kubernetes.outputs.addresses.value[index] }}"
+  loop: "{{ kubernetes.outputs.hostnames.value|flatten }}"
+  loop_control:
+    index_var: index
+- name: Add hosts to inventory.
   add_host:
-    name: "{{ kubernetes.outputs.inventory_hostname.0.value }}"
+    name: "{{ item }}"
+    ansible_host: "{{ kubernetes.outputs.addresses.value[index] }}"
     groups:
       - kubernetes
-      - actual
-    ansible_user: duchess
+  loop: "{{ kubernetes.outputs.hostnames.value|flatten }}"
+  loop_control:
+    index_var: index
 - name: Wait for SSH connection availability.
   wait_for:
     port: 22
     state: started
     host: "{{ item }}"
-  loop: "{{ kubernetes.outputs.inventory_hostname.value }}"
+  loop: "{{ kubernetes.outputs.addresses.value }}"
 ...
