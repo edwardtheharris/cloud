@@ -1,0 +1,2 @@
+[kubernetes]
+actual ansible_connection=docker

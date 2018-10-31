@@ -22,7 +22,7 @@
   roles:
     - {
       role: archlinux,
-      tags: [create]
+      tags: [create, archlinux]
     }
 - hosts: kubernetes
   remote_user: duchess
