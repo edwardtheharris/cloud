@@ -15,6 +15,7 @@
   fetch:
     src: /home/duchess/.kube/config
     dest: /root/.kube/config
+    flat: "yes"
 - name: Apply Calico etcd.
   shell: "{{ item }}"
   loop:
