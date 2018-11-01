@@ -21,6 +21,10 @@
         - meta: end_play
           tags:
             - destroy
+    - name: Reset the Cluster
+      shell: kubeadm reset -f
+      tags:
+        - teardown
 - name: Pre-configure the kubernetes hosts.
   remote_user: root
   gather_facts: "no"
