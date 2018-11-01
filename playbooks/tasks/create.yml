@@ -5,6 +5,8 @@
     state: present
     force_init: "yes"
   register: kubernetes
+  async: 300
+  poll: 5
 - name: Add hosts to inventory.
   add_host:
     name: "{{ item }}"
