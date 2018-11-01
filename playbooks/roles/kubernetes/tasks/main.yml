@@ -1,7 +1,7 @@
 ---
 - name: Install kubernetes requirements.
   pacman:
-    name: ebtables,ethtool,socat
+    name: ebtables,ethtool,netdata,socat
     state: present
   become: "yes"
 - name: Install kubernetes.
@@ -12,20 +12,18 @@
     - kubelet-bin
     - kubeadm-bin
     - kubectl-bin
-- name: Enable docker service.
+- name: Enable services.
   service:
-    name: docker
+    name: "{{ item }}"
     enabled: "yes"
   become: "yes"
-- name: Enable kubelet service.
-  service:
-    name: kubelet
-    enabled: "yes"
-  become: "yes"
+  loop:
+    - docker
+    - kubelet
+    - netdata
 - name: Restart instance.
   reboot:
   become: "yes"
-# tasks file for kubernetes-actua
 - name: Wait for reboot.
   wait_for:
     port: 22
@@ -35,6 +33,6 @@
   shell: swapoff -a
   become: "yes"
 - name: Run kubeadm init
-  shell: kubeadm init
+  shell: kubeadm init --pod-network-cidr=192.168.0.0/16
   become: "yes"
 ...
