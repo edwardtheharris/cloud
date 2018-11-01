@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: Instantiate the kubernetes hosts.
+  hosts: localhost
   tasks:
     - include_tasks:
         file: tasks/create.yml
@@ -18,24 +19,29 @@
         - meta: end_play
           tags:
             - destroy
-- name: Configure the kubernetes hosts.
+- name: Pre-configure the kubernetes hosts.
+  remote_user: root
   hosts: kubernetes
   tasks:
-    - include_role:
+    - name: Prepare ArchLinux
+      import_role:
         name: archlinux
       tags:
         - create
         - archlinux
-    - include_role:
+    - name: Include kubernetes modules.
+      include_role:
         name: ansible.kubernetes-modules
       tags:
         - create
         - kubernetes
-- hosts: kubernetes
+- name: Install and run kubernetes.
+  hosts: kubernetes
   remote_user: duchess
-  roles:
-    - {
-      role: kubernetes,
-      tags: [install]
-    }
+  tasks:
+    - name: Import kubernetes role.
+      import_role:
+        name: kubernetes
+      tags:
+        - install
 ...
