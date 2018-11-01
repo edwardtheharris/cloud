@@ -1,0 +1,27 @@
+---
+- name: Create kube directory.
+  file:
+    dest: /home/duchess/.kube
+    state: directory
+- name: Copy kubeconfig.
+  copy:
+    src: /etc/kubernetes/admin.conf
+    remote_src: "yes"
+    dest: /home/duchess/.kube/config
+    owner: duchess
+    group: docker
+  become: "yes"
+- name: Apply Calico etcd.
+  shell: "kubectl apply -f \
+    https://docs.projectcalico.org/\
+    v3.2/getting-started/kubernetes/\
+    installation/hosted/etcd.yaml"
+- shell: "kubectl apply -f \
+    https://docs.projectcalico.org/\
+    v3.2/getting-started/kubernetes/\
+    installation/rbac.yaml"
+- shell: "kubectl apply -f \
+    https://docs.projectcalico.org/\
+    v3.2/getting-started/kubernetes/\
+    installation/hosted/calico.yaml"
+...
