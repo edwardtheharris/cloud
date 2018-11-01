@@ -11,6 +11,11 @@
     owner: duchess
     group: docker
   become: "yes"
+- name: Copy kubeconfig to local.
+  fetch:
+    src: /home/duchess/.kube/config
+    dest: /root/.kube/config
+    flat: "yes"
 - name: Apply Calico etcd.
   shell: "kubectl apply -f \
     https://docs.projectcalico.org/\
