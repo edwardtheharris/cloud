@@ -12,16 +12,25 @@
     group: docker
   become: "yes"
 - name: Apply Calico etcd.
+  shell: "{{ item }}"
+  loop:
+    - "kubectl apply -f \
+      https://docs.projectcalico.org/\
+      v3.2/getting-started/kubernetes/\
+      installation/hosted/etcd.yaml"
+    - "kubectl apply -f \
+      https://docs.projectcalico.org/\
+      v3.2/getting-started/kubernetes/\
+      installation/rbac.yaml"
+    - "kubectl apply -f \
+      https://docs.projectcalico.org/\
+      v3.2/getting-started/kubernetes/\
+      installation/hosted/calico.yaml"
+- name: Wait for startup to complete.
+  shell: sleep 120
+- name: Deploy dashboard.
   shell: "kubectl apply -f \
-    https://docs.projectcalico.org/\
-    v3.2/getting-started/kubernetes/\
-    installation/hosted/etcd.yaml"
-- shell: "kubectl apply -f \
-    https://docs.projectcalico.org/\
-    v3.2/getting-started/kubernetes/\
-    installation/rbac.yaml"
-- shell: "kubectl apply -f \
-    https://docs.projectcalico.org/\
-    v3.2/getting-started/kubernetes/\
-    installation/hosted/calico.yaml"
+          https://raw.githubusercontent.com/\
+          kubernetes/dashboard/master/src/\
+          deploy/recommended/kubernetes-dashboard.yaml"
 ...

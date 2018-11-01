@@ -7,37 +7,13 @@
   pacman:
     update_cache: "yes"
     upgrade: "yes"
-  async: 450
-  poll: 5
 - name: Install some utilities.
   pacman:
     name: base-devel,docker,git,netdata,unzip,vim
     state: present
-- name: Start netdata.
-  service:
-    name: netdata
-    state: started
-    enabled: "yes"
-  when: ansible_connection != 'docker'
-- name: Remove old vi link.
-  file:
-    state: absent
-    dest: /usr/bin/vi
-- name: Link proper vim.
-  file:
-    state: link
-    src: /usr/bin/vim
-    dest: /usr/bin/vi
-- name: Add group for docker.
-  group:
-    name: docker
-    state: present
-- name: Download pip installation.
-  get_url:
-    url: https://bootstrap.pypa.io/get-pip.py
-    dest: /tmp/get-pip.py
-- name: Run pip installation.
-  shell: python3 /tmp/get-pip.py; rm /tmp/get-pip.py
+- name: Set hostname.
+  hostname:
+    name: "{{ inventory_hostname }}.gahan-corporation.net"
 - include_tasks: glances.yml
 - name: Add user.
   user:
