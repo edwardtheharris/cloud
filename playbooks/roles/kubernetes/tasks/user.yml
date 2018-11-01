@@ -30,11 +30,20 @@
       https://docs.projectcalico.org/\
       v3.2/getting-started/kubernetes/\
       installation/hosted/calico.yaml"
-- name: Wait for startup to complete.
+    - >
+        kubectl taint nodes --all
+        node-role.kubernetes.io/master-
+- name: Complete startup
   shell: sleep 120
 - name: Deploy dashboard.
   shell: "kubectl apply -f \
           https://raw.githubusercontent.com/\
           kubernetes/dashboard/master/src/\
           deploy/recommended/kubernetes-dashboard.yaml"
+- name: Copy dashboard auth
+  copy:
+    src: dashboard.yml
+    dest: /home/duchess/dashboard.yml
+- name: Create dashboard auth
+  shell: kubectl create -f /home/duchess/dashboard.yml
 ...
