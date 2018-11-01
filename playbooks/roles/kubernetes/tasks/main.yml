@@ -34,7 +34,7 @@
 - name: Wait for a connection
   wait_for_connection:
     connect_timeout: 20
-    timeout: 300
+    timeout: 900
 # - name: Restart instance.
 #  reboot:
 #    connect_timeout: 60
