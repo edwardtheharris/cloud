@@ -11,6 +11,10 @@
     owner: duchess
     group: docker
   become: "yes"
+- name: Copy kubeconfig to local.
+  fetch:
+    src: /home/duchess/.kube/config
+    dest: /root/.kube/config
 - name: Apply Calico etcd.
   shell: "{{ item }}"
   loop:
