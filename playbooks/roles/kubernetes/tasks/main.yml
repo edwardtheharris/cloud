@@ -23,6 +23,8 @@
     - netdata
 - name: Restart instance.
   reboot:
+    connect_timeout: 60
+    reboot_timeout: 7000
   become: "yes"
 - name: Wait for reboot.
   wait_for:
