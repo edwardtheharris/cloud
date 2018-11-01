@@ -11,17 +11,39 @@
     owner: duchess
     group: docker
   become: "yes"
+- name: Copy kubeconfig to local.
+  fetch:
+    src: /home/duchess/.kube/config
+    dest: /root/.kube/config
 - name: Apply Calico etcd.
+  shell: "{{ item }}"
+  loop:
+    - "kubectl apply -f \
+      https://docs.projectcalico.org/\
+      v3.2/getting-started/kubernetes/\
+      installation/hosted/etcd.yaml"
+    - "kubectl apply -f \
+      https://docs.projectcalico.org/\
+      v3.2/getting-started/kubernetes/\
+      installation/rbac.yaml"
+    - "kubectl apply -f \
+      https://docs.projectcalico.org/\
+      v3.2/getting-started/kubernetes/\
+      installation/hosted/calico.yaml"
+    - >
+        kubectl taint nodes --all
+        node-role.kubernetes.io/master-
+- name: Complete startup
+  shell: sleep 120
+- name: Deploy dashboard.
   shell: "kubectl apply -f \
-    https://docs.projectcalico.org/\
-    v3.2/getting-started/kubernetes/\
-    installation/hosted/etcd.yaml"
-- shell: "kubectl apply -f \
-    https://docs.projectcalico.org/\
-    v3.2/getting-started/kubernetes/\
-    installation/rbac.yaml"
-- shell: "kubectl apply -f \
-    https://docs.projectcalico.org/\
-    v3.2/getting-started/kubernetes/\
-    installation/hosted/calico.yaml"
+          https://raw.githubusercontent.com/\
+          kubernetes/dashboard/master/src/\
+          deploy/recommended/kubernetes-dashboard.yaml"
+- name: Copy dashboard auth
+  copy:
+    src: dashboard.yml
+    dest: /home/duchess/dashboard.yml
+- name: Create dashboard auth
+  shell: kubectl create -f /home/duchess/dashboard.yml
 ...
