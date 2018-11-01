@@ -17,6 +17,7 @@
   service:
     name: netdata
     state: started
+  when: ansible_connection != 'docker'
 - name: Remove old vi link.
   file:
     state: absent
