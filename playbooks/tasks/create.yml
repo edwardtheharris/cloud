@@ -5,15 +5,8 @@
     state: present
     force_init: "yes"
   register: kubernetes
-- debug:
-    var: kubernetes
-- debug:
-    msg: "
-     {{ item }} {{ index }}
-     {{ kubernetes.outputs.addresses.value[index] }}"
-  loop: "{{ kubernetes.outputs.hostnames.value|flatten }}"
-  loop_control:
-    index_var: index
+  async: 300
+  poll: 5
 - name: Add hosts to inventory.
   add_host:
     name: "{{ item }}"
