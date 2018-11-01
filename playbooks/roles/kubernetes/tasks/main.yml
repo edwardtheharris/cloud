@@ -26,15 +26,14 @@
     enabled: "yes"
     state: stopped
   become: "yes"
-- name: Reboot immediately if there was a change.
-  shell: "sleep 5 && shutdown -r now"
-  async: 1
+- name: Reboot
+  shell: /sbin/shutdown -r +1
+  async: 0
   poll: 0
-- name: Wait for the reboot to complete if there was a change.
+  become: "yes"
+- name: Wait for a connection
   wait_for_connection:
     connect_timeout: 20
-    sleep: 5
-    delay: 5
     timeout: 300
 # - name: Restart instance.
 #  reboot:
@@ -51,4 +50,9 @@
 - name: Run kubeadm init
   shell: kubeadm init --pod-network-cidr=192.168.0.0/16
   become: "yes"
+  register: kubeadm
+- debug:
+    var: kubeadm
+- include_tasks:
+    file: user.yml
 ...

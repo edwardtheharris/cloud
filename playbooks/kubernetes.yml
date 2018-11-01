@@ -21,6 +21,7 @@
             - destroy
 - name: Pre-configure the kubernetes hosts.
   remote_user: root
+  gather_facts: "no"
   hosts: kubernetes
   tasks:
     - name: Prepare ArchLinux
