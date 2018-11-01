@@ -5,7 +5,8 @@
     state: directory
 - name: Copy kubeconfig.
   copy:
-    remote_src: /etc/kubernetes/admin.conf
+    src: /etc/kubernetes/admin.conf
+    remote_src: "yes"
     dest: /home/duchess/.kube/config
     owner: duchess
     group: docker
