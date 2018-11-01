@@ -9,8 +9,12 @@
     upgrade: "yes"
 - name: Install some utilities.
   pacman:
-    name: base-devel,docker,git,unzip,vim
+    name: base-devel,docker,git,netdata,unzip,vim
     state: present
+- name: Start netdata.
+  service:
+    name: netdata
+    state: started
 - name: Remove old vi link.
   file:
     state: absent
@@ -44,7 +48,7 @@
     key: "{{ item }}"
     state: present
   loop:
-    - "{{ root_ansible }}" 
+    - "{{ root_ansible }}"
     - "{{ cody_local }}"
 - name: Include user tasks.
   include_tasks:
