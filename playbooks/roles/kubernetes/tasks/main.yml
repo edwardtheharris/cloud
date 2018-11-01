@@ -4,7 +4,7 @@
     name: ebtables,ethtool,socat
     state: present
   become: "yes"
-- name: Install kubernetes.
+- name: Install Kubernetes
   aur:
     name: "{{ item }}"
   loop:
@@ -12,14 +12,20 @@
     - kubelet-bin
     - kubeadm-bin
     - kubectl-bin
-- name: Enable services.
+  async: 4500
+  poll: 5
+- name: Enable Docker
   service:
-    name: "{{ item }}"
+    name: docker
+    state: stopped
     enabled: "yes"
   become: "yes"
-  loop:
-    - docker
-    - kubelet
+- name: Enable kubelet
+  service:
+    name: kubelet
+    enabled: "yes"
+    state: stopped
+  become: "yes"
 - name: Reboot immediately if there was a change.
   shell: "sleep 5 && shutdown -r now"
   async: 1
