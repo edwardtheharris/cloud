@@ -12,8 +12,6 @@
     - kubelet-bin
     - kubeadm-bin
     - kubectl-bin
-  async: 4500
-  poll: 5
 - name: Enable Docker
   service:
     name: docker

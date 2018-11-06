@@ -1,4 +1,4 @@
-#!/opt/ansible/bin/python3
+#!/usr/bin/env python
 """Linode management module."""
 
 # Copyright: Ansible Project
@@ -56,13 +56,32 @@ def manage_linodes(module, client):
         'absent': remove_linode,
         'list': list_linodes,
         'present': create_linode,
-        'started': start_linode,
-        'stopped': stop_linode,
+        'tagged': tag_linode,
     }
     module.log(module.params.get('state'))
 
     return manage_functions.get(
         module.params.get('state'))(module, client)
+
+
+def tag_linode(module, client):
+    """Update a linode's metadata."""
+    try:
+        tlinode = client.linode.instances(
+            linode_api4.Instance.label == module.params.get('name'))[0]
+        changed = [
+            tlinode.tags.append(tag) for tag in module.params.get('tags')]
+        tlinode.tags.append(module.params.get('name'))
+        tlinode.save()
+    except linode_api4.errors.ApiError as exc:
+        module.fail_json(msg="Failed: %s" % exc)
+
+    return {
+        'changed': True,
+        'instances': [{
+            'id': tlinode.id,
+            'chagned': changed,
+            'tags': tlinode.tags}]}
 
 
 def remove_linode(module, client):
@@ -114,7 +133,9 @@ def main():
                 'default': 'present',
                 'choices': [
                     'absent', 'active', 'deleted', 'list',
-                    'present', 'restarted', 'started', 'stopped']},
+                    'present', 'restarted', 'started', 'stopped',
+                    'tagged',
+                    ]},
             "swap_size": {'type': 'int'},
             'tags': {'type': 'list'},
             'token': {'type': 'str', 'no_log': True},
