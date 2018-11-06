@@ -8,10 +8,10 @@ Requirements
 
 Ansible, Terraform, a module here, a library there. For the most part it's pretty self contained and you should be okay with just Ansible and Terraform.
 
-Role Variables
---------------
+Build Status
+------------
 
-None.
+[![Build Status](https://travis-ci.com/edwardtheharris/linodes.svg?branch=master)](https://travis-ci.com/edwardtheharris/linodes)
 
 Dependencies
 ------------
