@@ -1,12 +1,12 @@
-Kubernetes Actual
-=================
+Linodes
+=======
 
-Installs required software for a Kubernetes master node.
+Instantiates and configures various services based in [Linode](https://cloud.linode.com).
 
 Requirements
 ------------
 
-A machine running ArchLinux along with the [ansible-aur](https://github.com/kewlfft/ansible-aur) module.
+Ansible, Terraform, a module here, a library there. For the most part it's pretty self contained and you should be okay with just Ansible and Terraform.
 
 Role Variables
 --------------
