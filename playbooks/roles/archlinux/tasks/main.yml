@@ -3,12 +3,6 @@
   copy:
     src: sudoers
     dest: /etc/sudoers
-- name: Tag the linodes.
-  linode:
-    name: "{{ inventory_hostname }}"
-    state: tagged
-    tags:
-      - kubernetes
 - name: Upgrade system packages.
   pacman:
     update_cache: "yes"
