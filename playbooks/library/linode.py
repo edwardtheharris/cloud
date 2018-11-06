@@ -67,10 +67,17 @@ def manage_linodes(module, client):
 def tag_linode(module, client):
     """Update a linode's metadata."""
     try:
-        tag_linode = client.linode.instances(
-            linode_api4.Instance.id == module.params.get('id'))[0]
+        tlinode = client.linode.instances(
+            linode_api4.Instance.label == module.params.get('name'))[0]
+        tlinode.tags.append('kubernetes')
+        tlinode.tags.append(module.params.get('name'))
+        tlinode.save()
     except linode_api4.errors.ApiError as exc:
         module.fail_json(msg="Failed: %s" % exc)
+
+    return {
+        'changed': True,
+        'instances': [{'id': tlinode.id, 'tags': tlinode.tags}]}
 
 
 def remove_linode(module, client):

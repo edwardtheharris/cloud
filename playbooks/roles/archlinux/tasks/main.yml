@@ -7,8 +7,6 @@
   pacman:
     update_cache: "yes"
     upgrade: "yes"
-  async: 450
-  poll: 5
 - name: Install some utilities.
   pacman:
     name: base-devel,docker,git,netdata,unzip,vim
