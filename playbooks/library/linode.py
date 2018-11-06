@@ -56,13 +56,21 @@ def manage_linodes(module, client):
         'absent': remove_linode,
         'list': list_linodes,
         'present': create_linode,
-        'started': start_linode,
-        'stopped': stop_linode,
+        'tagged': tag_linode,
     }
     module.log(module.params.get('state'))
 
     return manage_functions.get(
         module.params.get('state'))(module, client)
+
+
+def tag_linode(module, client):
+    """Update a linode's metadata."""
+    try:
+        tag_linode = client.linode.instances(
+            linode_api4.Instance.id == module.params.get('id'))[0]
+    except linode_api4.errors.ApiError as exc:
+        module.fail_json(msg="Failed: %s" % exc)
 
 
 def remove_linode(module, client):
