@@ -1,4 +1,4 @@
-#!/opt/ansible/bin/python3
+#!/usr/bin/env python
 """Linode management module."""
 
 # Copyright: Ansible Project
@@ -69,7 +69,7 @@ def tag_linode(module, client):
     try:
         tlinode = client.linode.instances(
             linode_api4.Instance.label == module.params.get('name'))[0]
-        tlinode.tags.append('kubernetes')
+        tlinode.tags.append(module.params.get('tags'))
         tlinode.tags.append(module.params.get('name'))
         tlinode.save()
     except linode_api4.errors.ApiError as exc:
