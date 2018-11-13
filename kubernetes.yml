@@ -34,6 +34,7 @@
   remote_user: duchess
   tags:
     - install
+    - create
   tasks:
     - name: Import kubernetes role.
       import_role:
@@ -43,6 +44,7 @@
   remote_user: duchess
   tags:
     - actual
+    - create
   tasks:
     - name: Import Kubernetes Actual
       import_role:
@@ -52,9 +54,10 @@
   remote_user: duchess
   tags:
     - workers
+    - create
   tasks:
     - name: Import Kubernetes Workers
       import_role:
-        name: kube-workers
+        name: kube-worker
 ...
 # vim: ft=yaml.ansible:
