@@ -1,12 +1,10 @@
 ---
 - name: Start cluster with terraform.
   terraform:
-    project_path: ../tf/kubernetes
+    project_path: "{{ lookup('env', 'PWD') }}/roles/terraform/files/kubernetes"
     state: present
     force_init: "yes"
   register: kubernetes
-  tags:
-    - create
 - name: Add hosts to inventory.
   add_host:
     name: "{{ item }}"
@@ -16,8 +14,6 @@
   loop: "{{ kubernetes.outputs.hostnames.value|flatten }}"
   loop_control:
     index_var: index
-  tags:
-    - create
 - name: Tag the linodes.
   linode:
     name: "{{ item }}"
@@ -25,30 +21,10 @@
     tags:
       - kubernetes
   loop: "{{ kubernetes.outputs.hostnames.value|flatten }}"
-  tags:
-    - create
 - name: Wait for SSH connection availability.
   wait_for:
     port: 22
     state: started
     host: "{{ item }}"
   loop: "{{ kubernetes.outputs.addresses.value }}"
-  tags:
-    - create
-- block:
-    - name: Destroy cluster with terraform.
-      terraform:
-        state: absent
-        project_path: tf/kubernetes
-      tags:
-        - destroy
-      async: 600
-      poll: 5
-    - meta: end_play
-      tags:
-        - destroy
-- name: Reset the Cluster
-  shell: kubeadm reset -f
-  tags:
-    - teardown
 ...
