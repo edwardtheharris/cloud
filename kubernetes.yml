@@ -13,7 +13,7 @@
         - name: Destroy cluster with terraform.
           terraform:
             state: absent
-            project_path: ../tf/kubernetes
+            project_path: tf/kubernetes
           tags:
             - destroy
           async: 600
