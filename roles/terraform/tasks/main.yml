@@ -21,6 +21,14 @@
     tags:
       - kubernetes
   loop: "{{ kubernetes.outputs.hostnames.value|flatten }}"
+- name: Tag worker linodes.
+  linode:
+    name: "{{ item }}"
+    state: tagged
+    tags:
+      - workers
+  loop: "{{ kubernetes.outputs.hostnames.value|flatten }}"
+  when: item != 'actual'
 - name: Wait for SSH connection availability.
   wait_for:
     port: 22

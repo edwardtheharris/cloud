@@ -12,6 +12,10 @@
     - kubelet-bin
     - kubeadm-bin
     - kubectl-bin
+- name: Update hostnames.
+  hostname:
+    name: "{{ inventory_hostname }}"
+  become: "yes"
 - name: Enable Docker
   service:
     name: docker
@@ -33,24 +37,7 @@
   wait_for_connection:
     connect_timeout: 20
     timeout: 900
-# - name: Restart instance.
-#  reboot:
-#    connect_timeout: 60
-#  become: "yes"
-# - name: Wait for reboot.
-#   wait_for:
-#    port: 22
-#    host: "{{ inventory_hostname }}"
-#    state: started
 - name: Turn swap off.
   shell: swapoff -a
   become: "yes"
-- name: Run kubeadm init
-  shell: kubeadm init --pod-network-cidr=192.168.0.0/16
-  become: "yes"
-  register: kubeadm
-- debug:
-    var: kubeadm
-- include_tasks:
-    file: user.yml
 ...
