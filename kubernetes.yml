@@ -2,28 +2,13 @@
 - name: Instantiate the kubernetes hosts.
   hosts: localhost
   tasks:
-    - include_tasks:
-        file: tasks/create.yml
-        apply:
-          tags:
-            - create
+    - name: Include Terraform role.
+      import_role:
+        name: terraform
       tags:
         - create
-    - block:
-        - name: Destroy cluster with terraform.
-          terraform:
-            state: absent
-            project_path: tf/kubernetes
-          tags:
-            - destroy
-          async: 600
-          poll: 5
-        - meta: end_play
-          tags:
-            - destroy
-    - name: Reset the Cluster
-      shell: kubeadm reset -f
-      tags:
+        - terraform
+        - destroy
         - teardown
 - name: Pre-configure the kubernetes hosts.
   remote_user: root
@@ -52,3 +37,4 @@
       tags:
         - install
 ...
+# vim: ft=yaml.ansible:
