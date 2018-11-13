@@ -1,54 +1,42 @@
 ---
-- name: Instantiate the kubernetes hosts.
+- name: Destroy the cluster.
   hosts: localhost
   tasks:
-    - include_tasks:
-        file: tasks/create.yml
-        apply:
-          tags:
-            - create
+    - name: Include destruction.
+      import_role:
+        name: tf-destroy
       tags:
-        - create
-    - block:
-        - name: Destroy cluster with terraform.
-          terraform:
-            state: absent
-            project_path: tf/kubernetes
-          tags:
-            - destroy
-          async: 600
-          poll: 5
-        - meta: end_play
-          tags:
-            - destroy
-    - name: Reset the Cluster
-      shell: kubeadm reset -f
-      tags:
-        - teardown
+        - destroy
+- name: Instantiate the kubernetes hosts.
+  hosts: localhost
+  tags:
+    - create
+  tasks:
+    - name: Include Terraform role.
+      import_role:
+        name: terraform
 - name: Pre-configure the kubernetes hosts.
   remote_user: root
   gather_facts: "no"
   hosts: kubernetes
+  tags:
+    - create
+    - archlinux
   tasks:
     - name: Prepare ArchLinux
       import_role:
         name: archlinux
-      tags:
-        - create
-        - archlinux
     - name: Include kubernetes modules.
       include_role:
         name: ansible.kubernetes-modules
-      tags:
-        - create
-        - kubernetes
 - name: Install and run kubernetes.
   hosts: kubernetes
   remote_user: duchess
+  tags:
+    - install
   tasks:
     - name: Import kubernetes role.
       import_role:
         name: kubernetes
-      tags:
-        - install
 ...
+# vim: ft=yaml.ansible:
