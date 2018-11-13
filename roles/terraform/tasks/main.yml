@@ -1,12 +1,10 @@
 ---
 - name: Start cluster with terraform.
   terraform:
-    project_path: ../tf/kubernetes
+    project_path: "{{ lookup('env', 'PWD') }}/roles/terraform/files/kubernetes"
     state: present
     force_init: "yes"
   register: kubernetes
-  async: 300
-  poll: 5
 - name: Add hosts to inventory.
   add_host:
     name: "{{ item }}"
