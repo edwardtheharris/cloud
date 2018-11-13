@@ -3,9 +3,11 @@
   shell: kubeadm init --pod-network-cidr=192.168.0.0/16
   become: "yes"
   register: kubeadm
+- debug:
+    var: kubeadm
 - name: Set the join command.
   set_fact:
-    - join_command: kubeadm[-1]
+    join_command: "{{ kubeadm.stdout_lines[-1] }}"
 - debug:
     var: join_command
 - name: Create kube directory.
