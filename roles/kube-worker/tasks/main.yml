@@ -1,2 +1,7 @@
 ---
-# tasks file for kube-worker
+- name: Execute join command.
+  shell: "{{ join_command }}"
+  register: result
+- debug:
+    var: result
+...
