@@ -38,5 +38,23 @@
     - name: Import kubernetes role.
       import_role:
         name: kubernetes
+- name: Initialize Kubernetes Actual
+  hosts: actual
+  remote_user: duchess
+  tags:
+    - actual
+  tasks:
+    - name: Import Kubernetes Actual
+      import_role:
+        name: kube-actual
+- name: Join Kubernetes Workers
+  hosts: workers
+  remote_user: duchess
+  tags:
+    - workers
+  tasks:
+    - name: Import Kubernetes Workers
+      import_role:
+        name: kube-workers
 ...
 # vim: ft=yaml.ansible:
