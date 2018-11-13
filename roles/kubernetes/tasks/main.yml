@@ -45,12 +45,6 @@
 - name: Turn swap off.
   shell: swapoff -a
   become: "yes"
-- name: Run kubeadm init
-  shell: kubeadm init --pod-network-cidr=192.168.0.0/16
-  become: "yes"
-  register: kubeadm
-- debug:
-    var: kubeadm
 - include_tasks:
     file: user.yml
 ...
