@@ -3,6 +3,8 @@ Linodes
 
 Instantiates and configures various services based in [Linode](https://cloud.linode.com).
 
+Some notes on [loops in Terraform](https://blog.gruntwork.io/terraform-tips-tricks-loops-if-statements-and-gotchas-f739bbae55f9).
+
 Requirements
 ------------
 
