@@ -8,6 +8,11 @@ Requirements
 
 Ansible, Terraform, a module here, a library there. For the most part it's pretty self contained and you should be okay with just Ansible and Terraform.
 
+### Environment
+
+    PROJECT=(kubernetes|swarm)
+
+
 Build Status
 ------------
 

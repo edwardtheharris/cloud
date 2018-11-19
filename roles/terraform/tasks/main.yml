@@ -1,17 +1,18 @@
 ---
 - name: Start cluster with terraform.
   terraform:
-    project_path: "{{ lookup('env', 'PWD') }}/roles/terraform/files/kubernetes"
+    project_path: "{{ lookup('env', 'PWD') }}\
+      /roles/terraform/files/{{ lookup('env', 'PROJECT') }}"
     state: present
     force_init: "yes"
-  register: kubernetes
+  register: instances
 - name: Add hosts to inventory.
   add_host:
     name: "{{ item }}"
-    ansible_host: "{{ kubernetes.outputs.addresses.value[index] }}"
+    ansible_host: "{{ instances.outputs.addresses.value[index] }}"
     groups:
-      - kubernetes
-  loop: "{{ kubernetes.outputs.hostnames.value|flatten }}"
+      - "{{ lookup('env', 'PROJECT') }}"
+  loop: "{{ instances.outputs.hostnames.value|flatten }}"
   loop_control:
     index_var: index
 - name: Tag the linodes.
@@ -19,20 +20,20 @@
     name: "{{ item }}"
     state: tagged
     tags:
-      - kubernetes
-  loop: "{{ kubernetes.outputs.hostnames.value|flatten }}"
+      - "{{ lookup('env', 'PROJECT') }}"
+  loop: "{{ instances.outputs.hostnames.value|flatten }}"
 - name: Tag worker linodes.
   linode:
     name: "{{ item }}"
     state: tagged
     tags:
       - workers
-  loop: "{{ kubernetes.outputs.hostnames.value|flatten }}"
+  loop: "{{ instances.outputs.hostnames.value|flatten }}"
   when: item != 'actual'
 - name: Wait for SSH connection availability.
   wait_for:
     port: 22
     state: started
     host: "{{ item }}"
-  loop: "{{ kubernetes.outputs.addresses.value }}"
+  loop: "{{ instances.outputs.addresses.value }}"
 ...
