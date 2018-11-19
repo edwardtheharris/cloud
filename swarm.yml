@@ -1,0 +1,7 @@
+---
+- name: Initialize a Docker Swarm
+  hosts: localhost
+  tasks:
+    - debug:
+        msg: "Go!"
+...
