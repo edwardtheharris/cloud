@@ -2,11 +2,26 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: jenkins-service
+  creationTimestamp: 2018-11-20T19:30:58Z
+  labels:
+    app: jenkins
+  name: jenkins
+  namespace: default
+  resourceVersion: "7686"
+  selfLink: /api/v1/namespaces/default/services/jenkins
+  uid: ce9e1926-ecfa-11e8-bd58-f23c912114e0
 spec:
+  clusterIP: 10.96.25.80
+  externalTrafficPolicy: Cluster
   ports:
-    - port: 8080
-      targetPort: 8080
+  - nodePort: 31563
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
   selector:
     app: jenkins
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer: {}
 ...
