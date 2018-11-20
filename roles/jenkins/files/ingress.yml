@@ -1,0 +1,13 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: jenkins-ingress
+spec:
+  rules:
+    - host: jenkins.gahan-corporation.net
+      http:
+        paths:
+          - backend:
+              serviceName: jenkins-service
+              servicePort: 8080
