@@ -1,2 +1,4 @@
 ---
-# tasks file for jenkins
+- name: Apply Jenkins Master config to Kubernetes cluster.
+  
+...
