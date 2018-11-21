@@ -1,4 +1,9 @@
 ---
+- name: Install the OpenShift API.
+  pip:
+    name: openshift
+    state: latest
+  become: "yes"
 - name: Run kubeadm init
   shell: kubeadm init --pod-network-cidr=192.168.0.0/16
   become: "yes"

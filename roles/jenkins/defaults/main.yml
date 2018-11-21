@@ -1,2 +1,3 @@
 ---
-# defaults file for jenkins
+root_directory: /srv/linodes/
+...
