@@ -1,16 +1,4 @@
 ---
-- name: Deploy ingress controller.
-  k8s:
-    kubeconfig: /home/duchess/.kube/config
-    src: "https://raw.githubusercontent.com/\
-      kubernetes/ingress-nginx/master/deploy/mandatory.yaml"
-    state: present
-- name: Deploy ingress controller service.
-  k8s:
-    kubeconfig: /home/duchess/.kube/config
-    src: "https://raw.githubusercontent.com\
-      /kubernetes/ingress-nginx/master/deploy/provider/baremetal/service-nodeport.yaml"
-    state: present
 - name: Copy configs to master.
   copy:
     src: "{{ item }}"
