@@ -13,7 +13,8 @@ metadata:
   name: jenkins-actual
   namespace: default
   resourceVersion: "7097"
-  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/jenkins-actual
+  selfLink:
+    /apis/extensions/v1beta1/namespaces/default/deployments/jenkins-actual
   uid: d397f3dc-ecf9-11e8-bd58-f23c912114e0
 spec:
   progressDeadlineSeconds: 2147483647
@@ -34,15 +35,15 @@ spec:
         app: jenkins
     spec:
       containers:
-      - image: jenkins/jenkins
-        imagePullPolicy: Always
-        name: jenkins-actual
-        ports:
-        - containerPort: 8080
-          protocol: TCP
-        resources: {}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
+        - image: jenkins/jenkins
+          imagePullPolicy: Always
+          name: jenkins-actual
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -51,12 +52,12 @@ spec:
 status:
   availableReplicas: 1
   conditions:
-  - lastTransitionTime: 2018-11-20T19:23:58Z
-    lastUpdateTime: 2018-11-20T19:23:58Z
-    message: Deployment has minimum availability.
-    reason: MinimumReplicasAvailable
-    status: "True"
-    type: Available
+    - lastTransitionTime: 2018-11-20T19:23:58Z
+      lastUpdateTime: 2018-11-20T19:23:58Z
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
   observedGeneration: 1
   readyReplicas: 1
   replicas: 1
