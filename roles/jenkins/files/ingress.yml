@@ -8,7 +8,6 @@ metadata:
   namespace: default
   selfLink:
     /apis/extensions/v1beta1/namespaces/default/ingresses/jenkins-ingress
-  uid: cafe8050-ecf9-11e8-bd58-f23c912114e0
 spec:
   rules:
     - http:
