@@ -1,4 +1,10 @@
 ---
+- name: Deploy ingress controller.
+  k8s:
+    kubeconfig: /home/duchess/.kube/config
+    src: "https://raw.githubusercontent.com/\
+      kubernetes/ingress-nginx/master/deploy/mandatory.yaml"
+    state: present
 - name: Copy configs to master.
   copy:
     src: "{{ item }}"
@@ -9,6 +15,7 @@
     - deployment.yml
 - name: Apply Jenkins configs.
   k8s:
+    kubeconfig: /home/duchess/.kube/config
     state: present
     src: "/tmp/{{ item }}"
   loop:
