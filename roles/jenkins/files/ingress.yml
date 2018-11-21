@@ -2,10 +2,6 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"extensions/v1beta1","kind":"Ingress","metadata":{"annotations":{},"name":"jenkins-ingress","namespace":"default"},"spec":{"rules":[{"host":"jenkins.gahan-corporation.net","http":{"paths":[{"backend":{"serviceName":"jenkins-service","servicePort":8080}}]}}]}}
-  creationTimestamp: 2018-11-20T19:23:43Z
   generation: 2
   name: jenkins-ingress
   namespace: default

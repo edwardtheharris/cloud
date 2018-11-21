@@ -1,9 +1,18 @@
 ---
-- name: Apply Jenkins Master config to Kubernetes cluster.
-  debug:
-    msg: "Not yet."
-- name: Apply the Ingress config.
+- name: Copy configs to master.
+  copy:
+    src: "{{ item }}"
+    dest: /tmp/
+  loop:
+    - ingress.yml
+    - service.yml
+    - deployment.yml
+- name: Apply Jenkins configs.
   k8s:
     state: present
-    src: files/ingress.yml
+    src: "/tmp/{{ item }}"
+  loop:
+    - ingress.yml
+    - service.yml
+    - deployment.yml
 ...
