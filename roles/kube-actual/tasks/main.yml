@@ -34,29 +34,22 @@
     flat: "yes"
 - name: Apply Calico etcd.
   k8s:
-    src: "https://docs.projectcalico.org/\
-      v3.2/getting-started/kubernetes/\
-      installation/hosted/etcd.yaml"
+    src: "{{ lookup('file', 'roles/kube-actual/files/etcd.yml') }}"
     state: present
     kubeconfig: /home/duchess/.kube/config
 - name: Apply rbac for Calico.
   k8s:
-    src: "https://docs.projectcalico.org/\
-      v3.2/getting-started/kubernetes/\
-      installation/rbac.yaml"
+    src: "{{ lookup('file', 'roles/kube-actual/files/rbac.yml') }}"
     state: present
     kubeconfig: /home/duchess/.kube/config
 - name: Apply Calico networking.
   k8s:
-    src: "https://docs.projectcalico.org/\
-      v3.2/getting-started/kubernetes/\
-      installation/hosted/calico.yaml"
+    src: "{{ lookup('file', 'roles/kube-actual/files/calico.yml') }}"
     state: present
     kubeconfig: /home/duchess/.kube/config
 - name: Apply dashboard.
   k8s:
-    src: "https://raw.githubusercontent.com/kubernetes/dashboard/\
-      master/src/deploy/recommended/kubernetes-dashboard.yaml"
+    src: "{{ lookup('file', 'roles/kube-actual/files/kb-dash.yml') }}"
     state: present
     kubeconfig: /home/duchess/.kube/config
 - name: Unsecure dashboard.
