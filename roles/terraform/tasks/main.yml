@@ -19,11 +19,11 @@
     name: "{{ item }}"
     ansible_host: "{{ kubernetes.outputs.addresses.value[index] }}"
     groups:
-      - workers 
+      - workers
   loop: "{{ kubernetes.outputs.hostnames.value|flatten }}"
   loop_control:
     index_var: index
-  when: item != actual
+  when: item != 'actual'
 - name: Tag the linodes.
   linode:
     name: "{{ item }}"
