@@ -14,6 +14,16 @@
   loop: "{{ kubernetes.outputs.hostnames.value|flatten }}"
   loop_control:
     index_var: index
+- name: Add workers to inventory group.
+  add_host:
+    name: "{{ item }}"
+    ansible_host: "{{ kubernetes.outputs.addresses.value[index] }}"
+    groups:
+      - workers 
+  loop: "{{ kubernetes.outputs.hostnames.value|flatten }}"
+  loop_control:
+    index_var: index
+  when: item != actual
 - name: Tag the linodes.
   linode:
     name: "{{ item }}"
