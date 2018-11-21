@@ -49,6 +49,8 @@
     - name: Import Kubernetes Actual
       import_role:
         name: kube-actual
+  post_tasks:
+    - meta: refresh_inventory
 - name: Join Kubernetes Workers
   hosts: workers
   remote_user: duchess
