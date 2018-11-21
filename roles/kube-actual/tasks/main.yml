@@ -33,16 +33,22 @@
     dest: /root/.kube/config
     flat: "yes"
 - name: Apply Calico etcd.
-  shell: "kubectl apply -f \
-    https://docs.projectcalico.org/\
-    v3.2/getting-started/kubernetes/\
-    installation/hosted/etcd.yaml"
-- shell: "kubectl apply -f \
-    https://docs.projectcalico.org/\
-    v3.2/getting-started/kubernetes/\
-    installation/rbac.yaml"
-- shell: "kubectl apply -f \
-    https://docs.projectcalico.org/\
-    v3.2/getting-started/kubernetes/\
-    installation/hosted/calico.yaml"
+  k8s:
+    src: "https://docs.projectcalico.org/\
+      v3.2/getting-started/kubernetes/\
+      installation/hosted/etcd.yaml"
+    state: present
+    kubeconfig: /home/duchess/.kube/config
+- shell:
+    src: "https://docs.projectcalico.org/\
+      v3.2/getting-started/kubernetes/\
+      installation/rbac.yaml"
+    state: present
+    kubeconfig: /home/duchess/.kube/config
+- shell:
+    src: "https://docs.projectcalico.org/\
+      v3.2/getting-started/kubernetes/\
+      installation/hosted/calico.yaml"
+    state: present
+    kubeconfig: /home/duchess/.kube/config
 ...
