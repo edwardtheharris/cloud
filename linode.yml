@@ -1,5 +1,5 @@
 ---
-- name: Destroy the cluster.
+- name: Destroy Linode cluster.
   hosts: localhost
   tasks:
     - name: Include destruction.
@@ -10,7 +10,7 @@
 - name: Instantiate the kubernetes hosts.
   hosts: localhost
   tags:
-    - create
+    - kubernetes
   tasks:
     - name: Include Terraform role.
       import_role:
@@ -20,7 +20,7 @@
   gather_facts: "no"
   hosts: kubernetes
   tags:
-    - create
+    - kubernetes
     - archlinux
   tasks:
     - name: Prepare ArchLinux
@@ -34,7 +34,7 @@
   remote_user: duchess
   tags:
     - install
-    - create
+    - kubernetes
   tasks:
     - name: Import kubernetes role.
       import_role:
@@ -44,7 +44,7 @@
   remote_user: duchess
   tags:
     - actual
-    - create
+    - kubernetes
   tasks:
     - name: Import Kubernetes Actual
       import_role:
@@ -54,10 +54,15 @@
   remote_user: duchess
   tags:
     - workers
-    - create
+    - kubernetes
   tasks:
     - name: Import Kubernetes Workers
       import_role:
         name: kube-worker
+- name: Initialize a Docker Swarm
+  hosts: localhost
+  tasks:
+    - debug:
+        msg: "Go!"
 ...
 # vim: ft=yaml.ansible:
