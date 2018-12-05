@@ -71,7 +71,6 @@ def tag_linode(module, client):
             linode_api4.Instance.label == module.params.get('name'))[0]
         changed = [
             tlinode.tags.append(tag) for tag in module.params.get('tags')]
-        tlinode.tags.append(module.params.get('name'))
         tlinode.save()
     except linode_api4.errors.ApiError as exc:
         module.fail_json(msg="Failed: %s" % exc)

@@ -1,0 +1,19 @@
+---
+- name: Copy configs to master.
+  copy:
+    src: "{{ item }}"
+    dest: /tmp/
+  loop:
+    - ingress.yml
+    - service.yml
+    - deployment.yml
+- name: Apply Jenkins configs.
+  k8s:
+    kubeconfig: /home/duchess/.kube/config
+    state: present
+    src: "/tmp/{{ item }}"
+  loop:
+    - ingress.yml
+    - service.yml
+    - deployment.yml
+...
