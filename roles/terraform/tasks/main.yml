@@ -2,7 +2,7 @@
 - name: Start cluster with terraform.
   terraform:
     project_path: "{{ lookup('env', 'PWD') }}\
-      /roles/terraform/files/{{ lookup('env', 'PROJECT') }}"
+      /roles/terraform/files/{{ orchestrator }}"
     state: present
     force_init: "yes"
   register: instances
@@ -11,7 +11,7 @@
     name: "{{ item }}"
     ansible_host: "{{ instances.outputs.addresses.value[index] }}"
     groups:
-      - "{{ lookup('env', 'PROJECT') }}"
+      - "{{ orchestrator }}"
   loop: "{{ instances.outputs.hostnames.value|flatten }}"
   loop_control:
     index_var: index
@@ -20,7 +20,7 @@
     name: "{{ item }}"
     state: tagged
     tags:
-      - "{{ lookup('env', 'PROJECT') }}"
+      - "{{ orchestrator }}"
   loop: "{{ instances.outputs.hostnames.value|flatten }}"
 - name: Tag worker linodes.
   linode:
