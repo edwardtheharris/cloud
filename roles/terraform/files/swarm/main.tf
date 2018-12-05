@@ -5,9 +5,10 @@ provider "linode" {
   token = "${var.linode_token}"
 }
 
-resource "linode_instance" "swarm-actual" {
+resource "linode_instance" "swarm" {
+  count = 3
   image           = "linode/arch"
-  label           = "actual"
+  label           = "swarm-${count.index}"
   group           = "swarm"
   region          = "us-west"
   type            = "g6-nanode-1"
@@ -15,50 +16,10 @@ resource "linode_instance" "swarm-actual" {
   root_pass       = "${var.linode_token}"
 }
 
-resource "linode_instance" "swarm-alpha" {
-  image = "linode/arch"
-  label = "alpha"
-  group = "swarm"
-  region = "us-west"
-  type = "g6-nanode-1"
-  authorized_keys = [ "${var.pubkey}" ]
-  root_pass = "${var.linode_token}"
-}
-
-# resource "linode_instance" "swarm-bravo" {
-#  image = "linode/arch"
-#  label = "bravo"
-#  group = "swarm"
-#  region = "us-west"
-#  type = "g6-nanode-1"
-#  authorized_keys = [ "${var.pubkey}" ]
-#  root_pass = "${var.linode_token}"
-#}
-
-#resource "linode_instance" "swarm-charlie" {
-#  image = "linode/arch"
-#  label = "charlie"
-#  group = "swarm"
-#  region = "us-west"
-#  type = "g6-nanode-1"
-#  authorized_keys = [ "${var.pubkey}" ]
-#  root_pass = "${var.linode_token}"
-#}
-
 output "addresses" {
-  value = [
-    "${linode_instance.swarm-actual.ip_address}",
-    "${linode_instance.swarm-alpha.ip_address}",
-#    "${linode_instance.swarm-bravo.ip_address}",
-#    "${linode_instance.swarm-charlie.ip_address}",
-  ]
+  value = ["${linode_instance.swarm.*.ip_address}",]
 }
 
 output "hostnames" {
-  value = [
-    "${linode_instance.swarm-actual.label}",
-    "${linode_instance.swarm-alpha.label}",
-#    "${linode_instance.swarm-bravo.label}",
-#    "${linode_instance.swarm-charlie.label}",
-  ]
+  value = ["${linode_instance.swarm.*.label}",]
 }
