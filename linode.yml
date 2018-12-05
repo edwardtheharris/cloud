@@ -10,8 +10,7 @@
 - name: Instantiate hosts.
   hosts: localhost
   tags:
-    - kubernetes
-    - swarm
+    - create
   tasks:
     - name: Include Terraform role.
       import_role:
@@ -19,32 +18,28 @@
 - name: Pre-configure the kubernetes hosts.
   remote_user: root
   gather_facts: "no"
-  hosts: kubernetes
+  hosts: "{{ orchestrator }}"
   tags:
-    - kubernetes
+    - create
     - archlinux
   tasks:
     - name: Prepare ArchLinux
       import_role:
         name: archlinux
-    - name: Include kubernetes modules.
-      include_role:
-        name: ansible.kubernetes-modules
-- name: Install and run kubernetes.
-  hosts: kubernetes
+- name: Install and run orchestrator.
+  hosts: "{{ orchestrator }}"
   remote_user: duchess
   tags:
-    - install
-    - kubernetes
+    - create
+    - "{{ orchestrator }}"
   tasks:
-    - name: Import kubernetes role.
+    - name: Import orchestrator role.
       import_role:
-        name: kubernetes
+        name: "{{ orchestrator }}"
 - name: Initialize Kubernetes Actual
   hosts: actual
   remote_user: duchess
   tags:
-    - actual
     - kubernetes
   tasks:
     - name: Import Kubernetes Actual
@@ -60,10 +55,5 @@
     - name: Import Kubernetes Workers
       import_role:
         name: kube-worker
-- name: Initialize a Docker Swarm
-  hosts: localhost
-  tasks:
-    - debug:
-        msg: "Go!"
 ...
-# vim: ft=yaml.ansible:
+# vim: ft=yaml.ansible

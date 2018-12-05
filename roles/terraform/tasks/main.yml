@@ -15,21 +15,33 @@
   loop: "{{ instances.outputs.hostnames.value|flatten }}"
   loop_control:
     index_var: index
-- name: Tag the linodes.
+- name: Tag the kubernetes master.
   linode:
     name: "{{ item }}"
     state: tagged
     tags:
       - "{{ orchestrator }}"
+      - archlinux
   loop: "{{ instances.outputs.hostnames.value|flatten }}"
-- name: Tag worker linodes.
+  when: orchestrator == 'kubernetes'
+- name: Tag kubernetes workers.
   linode:
     name: "{{ item }}"
     state: tagged
     tags:
       - workers
   loop: "{{ instances.outputs.hostnames.value|flatten }}"
-  when: item != 'actual'
+  when: item != 'actual' and orchestrator == 'kubernetes'
+- name: Tag swarm managers.
+  linode:
+    name: "{{ item }}"
+    state: tagged
+    tags:
+      - archlinux
+      - managers
+      - swarm
+  loop: "{{ instances.outputs.hostnames.values|flatten }}"
+  when: orchestrator == 'swarm'
 - name: Wait for SSH connection availability.
   wait_for:
     port: 22
