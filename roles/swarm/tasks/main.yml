@@ -31,13 +31,21 @@
   docker_swarm:
     state: present
   register: swarm_leader
-  # when: inventory_hostname == 'swarm-0'
-  when: inventory_hostname == '45.33.45.238'
+  delegate_to: 'swarm-0'
+  run_once: "yes"
 - debug:
-    var: swarm_leader
+    var: hostvars.swarm-0.ansiblbe_host
+  when: inventory_hostname != 'swarm-0'
+- debug:
+    var: hostvars[item].ansible_host
+  loop:
+    - swarm-0
+    - swarm-1
+    - swarm-2
 - name: Add remaining nodes as managers
   docker_swarm:
     state: join
-  # when: inventory_hostname != 'swarm-0'
-  when: inventory_hostname != '45.33.45.238'
+    join_token: "{{ swarm_leader.swarm_facts.JoinTokens.Manager }}"
+    advertise_addr: "{{ hostvars[inventory_hostname].ansible_host }}"
+  when: inventory_hostname != 'swarm-0'
 ...
