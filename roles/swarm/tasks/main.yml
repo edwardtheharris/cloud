@@ -1,6 +1,29 @@
 ---
 - name: Install Docker CE
   pacman:
+    name: "{{ item }}"
+    state: present
+  become: "yes"
+  loop:
+    - iptables
+    - docker
+- name: Reboot instance.
+  shell: /sbin/shutdown -r +1
+  async: 0
+  poll: 0
+  become: "yes"
+- name: Wait for a connection.
+  wait_for_connection:
+    connect_timeout: 20
+    timeout: 900
+- name: Start and enable Docker
+  service:
+    name: docker
+    state: started
+    enabled: "yes"
+  become: "yes"
+- name: Install Docker Python module
+  pip:
     name: docker
     state: present
   become: "yes"
@@ -8,11 +31,13 @@
   docker_swarm:
     state: present
   register: swarm_leader
-  when: inventory_hostname == 'swarm-0'
+  # when: inventory_hostname == 'swarm-0'
+  when: inventory_hostname == '45.33.45.238'
 - debug:
     var: swarm_leader
-- name: Add remaining nodes as managers.
+- name: Add remaining nodes as managers
   docker_swarm:
     state: join
-  when: inventory_hostname != 'swarm-0'
+  # when: inventory_hostname != 'swarm-0'
+  when: inventory_hostname != '45.33.45.238'
 ...

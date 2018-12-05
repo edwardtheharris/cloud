@@ -15,7 +15,7 @@
     - name: Include Terraform role.
       import_role:
         name: terraform
-- name: Pre-configure the kubernetes hosts.
+- name: Pre-configure the hosts.
   remote_user: root
   gather_facts: "no"
   hosts: "{{ orchestrator }}"
