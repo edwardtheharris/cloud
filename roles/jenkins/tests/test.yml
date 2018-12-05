@@ -1,0 +1,6 @@
+---
+- hosts: actual
+  remote_user: duchess
+  roles:
+    - jenkins
+...
