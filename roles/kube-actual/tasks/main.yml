@@ -1,4 +1,9 @@
 ---
+- name: Install the OpenShift API.
+  pip:
+    name: openshift
+    state: latest
+  become: "yes"
 - name: Run kubeadm init
   shell: kubeadm init --pod-network-cidr=192.168.0.0/16
   become: "yes"
@@ -28,16 +33,28 @@
     dest: /root/.kube/config
     flat: "yes"
 - name: Apply Calico etcd.
-  shell: "kubectl apply -f \
-    https://docs.projectcalico.org/\
-    v3.2/getting-started/kubernetes/\
-    installation/hosted/etcd.yaml"
-- shell: "kubectl apply -f \
-    https://docs.projectcalico.org/\
-    v3.2/getting-started/kubernetes/\
-    installation/rbac.yaml"
-- shell: "kubectl apply -f \
-    https://docs.projectcalico.org/\
-    v3.2/getting-started/kubernetes/\
-    installation/hosted/calico.yaml"
+  k8s:
+    src: "{{ lookup('file', 'roles/kube-actual/files/etcd.yml') }}"
+    state: present
+    kubeconfig: /home/duchess/.kube/config
+- name: Apply rbac for Calico.
+  k8s:
+    src: "{{ lookup('file', 'roles/kube-actual/files/rbac.yml') }}"
+    state: present
+    kubeconfig: /home/duchess/.kube/config
+- name: Apply Calico networking.
+  k8s:
+    src: "{{ lookup('file', 'roles/kube-actual/files/calico.yml') }}"
+    state: present
+    kubeconfig: /home/duchess/.kube/config
+- name: Apply dashboard.
+  k8s:
+    src: "{{ lookup('file', 'roles/kube-actual/files/kb-dash.yml') }}"
+    state: present
+    kubeconfig: /home/duchess/.kube/config
+- name: Unsecure dashboard.
+  k8s:
+    src: "{{ lookup('file', 'roles/kube-actual/files/dashboard.yml') }}"
+    state: present
+    kubeconfig: /home/duchess/.kube/config
 ...
